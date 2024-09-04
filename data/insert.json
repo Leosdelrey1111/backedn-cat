@@ -1,0 +1,46 @@
+[
+  {
+    "nom_usr": "Alejandro",
+    "appP_usr": "Nunca",
+    "appM_usr": "Vive",
+    "passwd_usr": "maldonado",
+    "nacionalidad_usr": "mexicano",
+    "sexo_usr": "Hombre",
+    "edad_usr": 19,
+    "email_usr": "maldo1074@gmail.com",
+    "id_ciudad": 1
+  },
+  {
+    "nom_usr": "Maya",
+    "app_usr": "Reina",
+    "passwd_usr": "siempre",
+    "nacionalidad_usr": "argentina",
+    "sexo_usr": "Mujer",
+    "edad_usr": 9,
+    "email_usr": "Maya@gmail.com",
+    "id_ciudad": 1
+  },
+  {
+    "nom_usr": "Luis",
+    "appP_usr": "Emanems",
+    "appM_usr": "Muere",
+    "passwd_usr": "contraseña",
+    "nacionalidad_usr": "colombiano",
+    "sexo_usr": "Hombre",
+    "edad_usr": 29,
+    "email_usr": "Luis@gmail.com",
+    "id_ciudad": 1
+  },
+  {
+    "nom_usr": "Luis",
+    "appP_usr": "Exito",
+    "appM_usr": "Mucho",
+    "passwd_usr": "Orgulo",
+    "nacionalidad_usr": "colombiano",
+    "sexo_usr": "Hombre",
+    "edad_usr": 29,
+    "email_usr": "Luis@mailinator.com",
+    "id_ciudad": 1
+  }
+  ]
+  

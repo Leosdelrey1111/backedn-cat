@@ -1,0 +1,211 @@
+-- Create a new database
+CREATE DATABASE dh_agencias;
+
+-- Switch to the new database
+USE dh_agencias;
+
+-- Create the Ciudad table
+CREATE TABLE Ciudad (
+    id_ciudad INT AUTO_INCREMENT PRIMARY KEY,
+    nom_ciudad VARCHAR(50) NOT NULL UNIQUE,
+    CHECK (nom_ciudad NOT LIKE '%[^a-zA-Z]%')
+);
+
+-- Create the Usuario table
+CREATE TABLE Usuario (
+    id_usr INT AUTO_INCREMENT PRIMARY KEY,
+    nom_usr VARCHAR(50) NOT NULL,
+    app_usr VARCHAR(80) NOT NULL,
+    passwd_usr VARCHAR(25) NOT NULL,
+    nacionalidad_usr VARCHAR(25) NOT NULL,
+    sexo_usr CHAR(6) NOT NULL,
+    edad_usr CHAR(3) CHECK (edad_usr > '0'),
+    email_usr VARCHAR(50) NOT NULL UNIQUE,
+    ciudad_usr VARCHAR(50),
+    status varchar(20) default 'false',
+	role varchar(20) default 'usuario',
+    CONSTRAINT chk_nom_usr CHECK (nom_usr NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_app_usr CHECK (app_usr NOT LIKE '%[^a-zA-Z]%')
+);
+
+-- Create the Tel_usr table
+CREATE TABLE Tel_usr (
+    num_tel_usr VARCHAR(12) NOT NULL UNIQUE,
+    id_usr INT NOT NULL,
+    CONSTRAINT chk_num_tel_usr CHECK (num_tel_usr NOT LIKE '%[^0-9]%'),
+    FOREIGN KEY (id_usr) REFERENCES Usuario(id_usr)
+);
+
+-- Create the Transportista table
+CREATE TABLE Transportista (
+    id_trans INT AUTO_INCREMENT PRIMARY KEY,
+    nom_trans VARCHAR(50) NOT NULL,
+    apellidos_trans VARCHAR(50) NOT NULL,
+    alcance_trans VARCHAR(50),
+    email_trans VARCHAR(50),
+    tarifa_trans VARCHAR(50) CHECK (tarifa_trans > '0'),
+    servicios_trans VARCHAR(50),
+    tel_trans VARCHAR(12) NOT NULL,
+    CONSTRAINT chk_nom_trans CHECK (nom_trans NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_apellidos_trans CHECK (apellidos_trans NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_tel_trans CHECK (tel_trans NOT LIKE '%[^0-9]%')
+);
+
+-- Create the Tipo_paquete table
+CREATE TABLE Tipo_paquete (
+    id_tipo_paquete INT AUTO_INCREMENT PRIMARY KEY,
+    nom_paquete VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Create the Tipo_experiencia table
+CREATE TABLE Tipo_experiencia (
+    id_experiencia INT AUTO_INCREMENT PRIMARY KEY,
+    nombre_exp VARCHAR(100) NOT NULL UNIQUE
+);
+
+-- Create the Agencia table
+CREATE TABLE Agencia (
+    id_agencia INT AUTO_INCREMENT PRIMARY KEY,
+    nom_ag VARCHAR(50) NOT NULL,
+    passwd_ag VARCHAR(25) NOT NULL,
+    email_ag VARCHAR(50) NOT NULL UNIQUE,
+    numtel_ag VARCHAR(12) NOT NULL,
+    nom_calle_ag VARCHAR(50),
+    num_calle_ag CHAR(5),
+    comunidad_ag VARCHAR(50),
+    tipo_ag VARCHAR(50),
+    id_ciudad INT NOT NULL,
+    CONSTRAINT chk_numtel_ag CHECK (numtel_ag NOT LIKE '%[^0-9]%'),
+    CONSTRAINT chk_nom_calle_ag CHECK (nom_calle_ag NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_num_calle_ag CHECK (num_calle_ag NOT LIKE '%[^a-zA-Z0-9]%'),
+    CONSTRAINT chk_comunidad_ag CHECK (comunidad_ag NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_tipo_ag CHECK (tipo_ag NOT LIKE '%[^a-zA-Z]%'),
+    FOREIGN KEY (id_ciudad) REFERENCES Ciudad(id_ciudad)
+);
+
+-- Create the servicio_agencia table
+CREATE TABLE servicio_agencia (
+    id_servicio_ag INT AUTO_INCREMENT PRIMARY KEY,
+    nom_servicio VARCHAR(50) NOT NULL,
+    id_agencia INT NOT NULL,
+    FOREIGN KEY (id_agencia) REFERENCES Agencia(id_agencia)
+);
+
+-- Create the Consulta table
+CREATE TABLE Consulta (
+    id_consulta INT AUTO_INCREMENT PRIMARY KEY,
+    llegada_cons TIME NOT NULL,
+    salida_cons TIME NOT NULL,
+    cliente_presupuesto INT NOT NULL,
+    fecha_deseada_cons DATE NOT NULL,
+    p1_lugar VARCHAR(200) NOT NULL,
+    p2_actividad VARCHAR(200) NOT NULL,
+    p3_lugOfehca VARCHAR(200) NOT NULL,
+    cantH_const TINYINT NOT NULL,
+    cantM_const TINYINT NOT NULL,
+    cantNina_const TINYINT NOT NULL,
+    cantNino_const TINYINT NOT NULL,
+    id_agencia INT NOT NULL,
+    id_usr INT NOT NULL,
+    FOREIGN KEY (id_agencia) REFERENCES Agencia(id_agencia),
+    FOREIGN KEY (id_usr) REFERENCES Usuario(id_usr)
+);
+
+-- Create the Hosteleria table
+CREATE TABLE Hosteleria (
+    id_hosteleria INT AUTO_INCREMENT PRIMARY KEY,
+    nom_hs VARCHAR(50) NOT NULL,
+    descripcion_hs VARCHAR(250) NOT NULL,
+    accesibility_infrastr_hs VARCHAR(250),
+    tipologia_hs VARCHAR(75),
+    costo_hs CHAR(5),
+    capacidad_hs CHAR(3) CHECK (capacidad_hs > '0'),
+    servicios VARCHAR(250),
+    id_ciudad INT NOT NULL,
+    FOREIGN KEY (id_ciudad) REFERENCES Ciudad(id_ciudad)
+);
+
+-- Create the Guia table
+CREATE TABLE Guia (
+    id_guia INT AUTO_INCREMENT PRIMARY KEY,
+    nom_guia VARCHAR(30) NOT NULL,
+    apellido_guia VARCHAR(50) NOT NULL,
+    nomcalle_guia VARCHAR(50),
+    numcalle_guia CHAR(3),
+    comunidad_guia VARCHAR(30),
+    categoria_guia VARCHAR(35),
+    telefono_guia VARCHAR(12) NOT NULL UNIQUE,
+    costo_guia CHAR(5) CHECK (costo_guia > '0'),
+    email_guia VARCHAR(50),
+    CONSTRAINT chk_nom_guia CHECK (nom_guia NOT LIKE '%[^a-zA-Z]%'),
+    CONSTRAINT chk_apellido_guia CHECK (apellido_guia NOT LIKE '%[^a-zA-Z]%')
+);
+
+-- Create the AtracTuristico table
+CREATE TABLE AtracTuristico (
+    id_atracTuris INT AUTO_INCREMENT PRIMARY KEY,
+    nom_actur VARCHAR(50) NOT NULL,
+    accesbilidad_actur VARCHAR(50),
+    descripcion_actur VARCHAR(250) NOT NULL,
+    nom_calle_actur VARCHAR(50),
+    num_calle_actur CHAR(4),
+    localidad_actur VARCHAR(35) NOT NULL,
+    tipologia_actur VARCHAR(50),
+    num_visitantes_actur SMALLINT CHECK (num_visitantes_actur > '0'),
+    categoria_actur VARCHAR(50),
+    servicios_actur VARCHAR(100),
+    costo_actur INT CHECK (costo_actur > '0'),
+    id_ciudad INT NOT NULL,
+    FOREIGN KEY (id_ciudad) REFERENCES Ciudad(id_ciudad)
+);
+
+-- Create the ActividadInterna table
+CREATE TABLE ActividadInterna (
+    id_actint INT AUTO_INCREMENT PRIMARY KEY,
+    horario_actint TIME,
+    nom_actividad VARCHAR(50),
+    id_atracTuris INT NOT NULL,
+    FOREIGN KEY (id_atracTuris) REFERENCES AtracTuristico(id_atracTuris)
+);
+
+-- Create the FechaIdeal table
+CREATE TABLE FechaIdeal (
+    id_fi INT AUTO_INCREMENT PRIMARY KEY,
+    fecha_ideal DATE,
+    id_atracTuris INT NOT NULL,
+    FOREIGN KEY (id_atracTuris) REFERENCES AtracTuristico(id_atracTuris)
+);
+
+-- Create the Paquete table
+CREATE TABLE Paquete (
+    id_paquete INT AUTO_INCREMENT PRIMARY KEY,
+    nom_paq VARCHAR(50),
+    descripcion_paq VARCHAR(250),
+    costo_paq CHAR(6),
+    id_trans INT,
+    id_guia INT,
+    id_usr INT,
+    id_agencia INT,
+    id_tipo_paquete INT,
+    id_experiencia INT,
+    FOREIGN KEY (id_trans) REFERENCES Transportista(id_trans),
+    FOREIGN KEY (id_guia) REFERENCES Guia(id_guia),
+    FOREIGN KEY (id_usr) REFERENCES Usuario(id_usr),
+    FOREIGN KEY (id_agencia) REFERENCES Agencia(id_agencia),
+    FOREIGN KEY (id_tipo_paquete) REFERENCES Tipo_paquete(id_tipo_paquete),
+    FOREIGN KEY (id_experiencia) REFERENCES Tipo_experiencia(id_experiencia)
+);
+
+-- Create the Itinerario table
+CREATE TABLE Itinerario (
+    id_itinerario INT AUTO_INCREMENT PRIMARY KEY,
+    actividad_itinerario VARCHAR(200) NOT NULL,
+    fecha_itinerario DATE NOT NULL,
+    responsable_itinerario VARCHAR(100),
+    id_paquete INT,
+    id_hosteleria INT,
+    id_atracTuris INT,
+    FOREIGN KEY (id_paquete) REFERENCES Paquete(id_paquete),
+    FOREIGN KEY (id_hosteleria) REFERENCES Hosteleria(id_hosteleria),
+    FOREIGN KEY (id_atracTuris) REFERENCES AtracTuristico(id_atracTuris)
+);
