@@ -53,7 +53,7 @@ const requestPasswordReset = (req, res) => {
                 }
 
                 const token = jwt.sign({ email: email_usr }, process.env.ACCESS_TOKEN, { expiresIn: '1h' });
-                const resetLink = `https://agencia-dh.vercel.app/reestablecer-contrasena?token=${token}`;
+                const resetLink = `https://senderos-dh.vercel.app/reestablecer-contrasena?token=${token}`;
 
                 const mailOptions = {
                     from: process.env.EMAIL,
@@ -145,8 +145,8 @@ const registerUser = async (req, res) => {
                     subject: 'Validación de Correo en Agencias Dolores Hidalgo',
                     html: `<h1>Confirmación de email</h1>
                            <p>Ignora este correo si no fuiste tú</p>
-                           <p>Click <a href="backenddhagencias-production-f839.up.railway.app/usuario/confirm/${token}">aquí</a> para confirmar tu correo electrónico.</p>`
-                };
+                           <p>Click <a href="backend-agencias-dh-production.up.railway.app/usuario/confirm/${token}">aquí</a> para confirmar tu correo electrónico.</p>`
+                }; //La líne de la etiqueta p se deberá cambiar si se cambia la direccion de deploy del backend.
 
                 transporter.sendMail(mailOptions, (error, info) => {
                     if (error) {
@@ -180,7 +180,7 @@ const confirmEmail = (req, res) => {
                 return res.status(500).json({ error: 'Error en la verificación del estado del usuario.' });
             }
             if (results.length > 0) {
-                res.redirect('https://agencia-dh.vercel.app/login');
+                res.redirect('https://senderos-dh.vercel.app/login');
             }
 
             const query = "UPDATE Usuario SET status = 'true' WHERE email_usr = ?";
@@ -190,7 +190,7 @@ const confirmEmail = (req, res) => {
                  }
 
                  // Redirect to the frontend after successful email confirmation
-                res.redirect('https://agencia-dh.vercel.app/login');
+                res.redirect('https://senderos-dh.vercel.app/login');
              });
         });
     });
