@@ -930,23 +930,3 @@ exports.getAllConsultas = (req, res) => {
     );
   });
 }
-
-
-// exports.getUsuarioById = (req, res) => {
-//   const { id_usr } = req.params;
-//   connection.query(
-//     'SELECT nom_usr, app_usr, nacionalidad_usr, sexo_usr, edad_usr, email_usr, ciudad_usr FROM Usuario WHERE id_usr = ? AND role = ?',
-//     [id_usr, 'usuario'],
-//     (error, results) => {
-//       if (error) {
-//         res.status(500).json({ error: error.message });
-//         return;
-//       }
-//       if (results.length === 0) {
-//         res.status(404).json({ error: 'Usuario no encontrado.' });
-//         return;
-//       }
-//       res.status(200).json(results[0]);
-//     }
-//   );
-// };
