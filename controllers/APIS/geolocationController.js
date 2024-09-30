@@ -3,16 +3,17 @@ const GeolocationService = require('../../services/geolocationService.js');
 const GeolocationController = {
   getNearbyServices: async (req, res) => {
     try {
-      const { latitude, longitude, radius = 5 } = req.body;
+      const { latitude, longitude, radius = 5, paquetesIds } = req.body; // Incluimos los paquetesIds
       
-      if (!latitude || !longitude) {
-        return res.status(400).json({ error: 'Latitude and longitude are required' });
+      if (!latitude || !longitude || !paquetesIds || paquetesIds.length === 0) {
+        return res.status(400).json({ error: 'Latitude, longitude, and paquetesIds are required' });
       }
 
       const services = await GeolocationService.findNearbyServices(
         parseFloat(latitude),
         parseFloat(longitude),
-        parseFloat(radius)
+        parseFloat(radius),
+        paquetesIds // Pasamos los paquetesIds
       );
       
       res.json(services);
@@ -22,5 +23,8 @@ const GeolocationController = {
     }
   }
 };
+
+module.exports = GeolocationController;
+
 
 module.exports = GeolocationController;
