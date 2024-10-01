@@ -3,6 +3,7 @@ const cors = require('cors');
 const usuarioRoute = require('./routes/usuarioRoutes');
 const adminRoute = require('./routes/adminRoutes');
 const gestorRoute = require('./routes/gestorRoutes');
+const geolocationRoutes = require('./routes/Apis/geolocationRoutes');
 
 const app = express();
 
@@ -23,10 +24,16 @@ app.use('/usuario', usuarioRoute);
 app.use('/admin', adminRoute);
 app.use('/gestor', gestorRoute); 
 
+//Apis
+
 app.get('/api/paypal-client-id', (req, res) => {
     const paypalClientId = process.env.PAYPAL_CLIENT_ID;
     res.json({ clientId: paypalClientId });
   });
+
+//Apis nuevas
+
+app.use('/api', geolocationRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {
