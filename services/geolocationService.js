@@ -27,18 +27,14 @@ const getNearbyServices = {
         ORDER BY nombre;
       `;
 
-      console.log('Ejecutando consulta principal...');
       connection.query(query, [paqueteId], (error, results) => {
         if (error) {
           console.error('Error encontrando servicios del paquete:', error);
           reject(error);
         } else {
-          console.log('Resultados de la consulta principal:', results);
           
           // Filtrar resultados nulos o indefinidos
           results = results.filter(result => result.id != null);
-          
-          console.log('Resultados filtrados:', results);
           resolve(results);
         }
       });
