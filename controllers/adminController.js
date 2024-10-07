@@ -147,16 +147,16 @@ exports.deleteGuia = (req, res) => {
 };
 
 exports.createHosteleria = (req, res) => {
-  const { nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs } = req.body;
+  const { nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud } = req.body;
   connection.query(
-    'INSERT INTO Hosteleria (nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs],
+    'INSERT INTO Hosteleria (nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud) VALUES (?, ?, ?, ?, ?, ?, ?, ?,?,?)',
+    [nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud],
     (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
       }
-      res.status(201).json({ id_hosteleria: results.insertId, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs });
+      res.status(201).json({ id_hosteleria: results.insertId, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud });
     }
   );
 };
@@ -188,16 +188,16 @@ exports.getHosteleriaById = (req, res) => {
 };
 
 exports.updateHosteleria = (req, res) => {
-  const { id_hosteleria, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs } = req.body;
+  const { id_hosteleria, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud } = req.body;
   connection.query(
-    'UPDATE Hosteleria SET nom_hs = ?, descripcion_hs = ?, accesibility_infrastr_hs = ?, tipologia_hs = ?, costo_hs = ?, capacidad_hs = ?, servicios = ?, tipo_hs = ?, img_hs = ? WHERE id_hosteleria = ?',
-    [nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs, id_hosteleria],
+    'UPDATE Hosteleria SET nom_hs = ?, descripcion_hs = ?, accesibility_infrastr_hs = ?, tipologia_hs = ?, costo_hs = ?, servicios = ?, tipo_hs = ?, img_hs = ?,latitud = ?, longitud = ? WHERE id_hosteleria = ?',
+    [nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud, id_hosteleria],
     (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
       }
-      res.status(200).json({ id_hosteleria, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, capacidad_hs, servicios, tipo_hs, img_hs });
+      res.status(200).json({ id_hosteleria, nom_hs, descripcion_hs, accesibility_infrastr_hs, tipologia_hs, costo_hs, servicios, tipo_hs, img_hs,latitud,longitud });
     }
   );
 };
@@ -219,16 +219,16 @@ exports.deleteHosteleria = (req, res) => {
 };
 
 exports.createAtracTuristico = (req, res) => {
-  const { nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur } = req.body;
+  const { nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur, latitud, longitud } = req.body;
   connection.query(
-    'INSERT INTO AtracTuristico (nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
-    [nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur],
+    'INSERT INTO AtracTuristico (nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur, latitud, longitud) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)',
+    [nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur, latitud, longitud],
     (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
       }
-      res.status(201).json({ id_atracTuris: results.insertId, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur });
+      res.status(201).json({ id_atracTuris: results.insertId, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur,latitud,longitud });
     }
   );
 };
@@ -259,16 +259,16 @@ exports.getAtracTuristiconById = (req, res) => {
 };
 
 exports.updateAtracTuristico = (req, res) => {
-  const { id_atracTuris, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur } = req.body;
+  const { id_atracTuris, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur,latitud,longitud } = req.body;
   connection.query(
-    'UPDATE AtracTuristico SET nom_actur = ?, accesbilidad_actur = ?, descripcion_actur = ?, nom_calle_actur = ?, num_calle_actur = ?, localidad_actur = ?, tipologia_actur = ?, num_visitantes_actur = ?, categoria_actur = ?, servicios_actur = ?, costo_actur = ?, tipo_actur = ? WHERE id_atracTuris = ?',
-    [nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur, id_atracTuris],
+    'UPDATE AtracTuristico SET nom_actur = ?, accesbilidad_actur = ?, descripcion_actur = ?, nom_calle_actur = ?, num_calle_actur = ?, localidad_actur = ?, tipologia_actur = ?, num_visitantes_actur = ?, categoria_actur = ?, servicios_actur = ?, costo_actur = ?, tipo_actur = ?, latitud = ?, longitud = ? WHERE id_atracTuris = ?',
+    [nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur, tipo_actur,latitud,longitud, id_atracTuris],
     (error, results) => {
       if (error) {
         res.status(500).json({ error: error.message });
         return;
       }
-      res.status(200).json({ id_atracTuris, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur,tipo_actur });
+      res.status(200).json({ id_atracTuris, nom_actur, accesbilidad_actur, descripcion_actur, nom_calle_actur, num_calle_actur, localidad_actur, tipologia_actur, num_visitantes_actur, categoria_actur, servicios_actur, costo_actur,tipo_actur, latitud, longitud });
     }
   );
 };
