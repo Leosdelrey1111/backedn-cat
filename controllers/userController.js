@@ -1,9 +1,11 @@
 const connection = require('../connection');
 const bcrypt = require('bcryptjs');
 const { json } = require('express');
+const axios = require('axios');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const nodemailer = require('nodemailer');
+
 
 // Configuración del transportador con una cuenta de Gmail
 const transporter = nodemailer.createTransport({
@@ -408,7 +410,74 @@ const getAllAgencias = (req, res) => {
     );
   };
 
+  const authFacebook = (req, res) => {
+    const { authToken } = req.body;
+  
+    // Valida el token con la API de Facebook
+    axios.get(`https://graph.facebook.com/me?access_token=${authToken}`)
+      .then(response => {
+        const facebookUser = response.data;
+  
+        // Si el token es válido, genera un token personalizado
+        const token = jwt.sign(
+          {
+            id: facebookUser.id,
+            name: facebookUser.name,
+            email: facebookUser.email,
+            role: 'usuario' // Ajusta esto según sea necesario
+          },
+          process.env.ACCESS_TOKEN,
+          { expiresIn: '1h' }
+        );
+  
+        // Devuelve el token personalizado al frontend
+        res.json({ token });
+      })
+      .catch(error => {
+        console.error('Error al validar el token de Facebook:', error);
+        res.status(401).json({ error: 'Token inválido' });
+      });
+  };
+  
+  const registerUserFacebook = async (req, res) => {
+    let usuario = req.body;
+    const query = "SELECT email_usr FROM Usuario WHERE email_usr = ?";
+
+    connection.query(query, [usuario.email_usr], async (err, results) => {
+        if (err) {
+            return res.status(500).json(err);
+        }
+
+        if (results.length <= 0) {
+            // Encriptar la contraseña
+            usuario.passwd_usr = await bcrypt.hash(usuario.passwd_usr, 10);
+
+            const insertQuery = "INSERT INTO Usuario (nom_usr, app_usr, passwd_usr, nacionalidad_usr, sexo_usr, edad_usr, email_usr, ciudad_usr, status, role) VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'false', 'usuario')";
+
+            connection.query(insertQuery, [usuario.nom_usr, usuario.app_usr, usuario.passwd_usr, usuario.nacionalidad_usr, usuario.sexo_usr, usuario.edad_usr, usuario.email_usr, usuario.ciudad_usr], (err, results) => {
+                if (err) {
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json({ message: "Successfully Registered." });
+            });
+        } else {
+            // Si el usuario ya existe, actualiza la información del usuario
+            const updateQuery = "UPDATE Usuario SET nom_usr = ?, app_usr = ?, nacionalidad_usr = ?, sexo_usr = ?, edad_usr = ?, ciudad_usr = ? WHERE email_usr = ?";
+
+            connection.query(updateQuery, [usuario.nom_usr, usuario.app_usr, usuario.nacionalidad_usr, usuario.sexo_usr, usuario.edad_usr, usuario.ciudad_usr, usuario.email_usr], (err, results) => {
+                if (err) {
+                    return res.status(500).json(err);
+                }
+                return res.status(200).json({ message: "User information updated successfully." });
+            });
+        }
+    });
+};
+
+
 module.exports = {
+    authFacebook,
+    registerUserFacebook,
     registerUser,
     confirmEmail,
     loginUser,

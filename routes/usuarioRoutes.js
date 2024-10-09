@@ -26,6 +26,11 @@ router.get('/profile', authMiddleware.verifyToken, userController.getProfile); /
 // Obtiene los paquetes del turista
 router.get('/mispaquetes', authMiddleware.verifyToken, isUsuario, userController.getMisPaquetesCompletos);
 
+//valida facebook y regresa token
+router.post('/insertarFace',userController.authFacebook);
+router.post('/regisUpFace', userController.registerUserFacebook);
+
+
 module.exports = router;
 
 // id_consulta int AI PK 

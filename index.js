@@ -5,6 +5,7 @@ const adminRoute = require('./routes/adminRoutes');
 const gestorRoute = require('./routes/gestorRoutes');
 const apisRoutes = require('./routes/APIS/geolocationRoutes');
 
+
 const app = express();
 
 // Middleware
@@ -34,6 +35,7 @@ app.get('/api/paypal-client-id', (req, res) => {
 //Apis nuevas
 
 app.use('/api', apisRoutes);
+
 
 // Global error handler
 app.use((err, req, res, next) => {
