@@ -18,4 +18,3 @@ connection.connect((err) => {
 });
 
 module.exports = connection;
-// IUfwe78fw4

@@ -1,6 +1,5 @@
 const connection = require('../connection');
 const bcrypt = require('bcryptjs');
-const { json } = require('express');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
