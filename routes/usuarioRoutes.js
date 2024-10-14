@@ -32,20 +32,3 @@ router.post('/regisUpFace', userController.registerUserFacebook);
 
 
 module.exports = router;
-
-// id_consulta int AI PK 
-// llegada_cons date 
-// salida_cons date 
-// adults_18_36 int 
-// adults_37_64 int 
-// ninos_0_8 int 
-// ninos_9_8 int 
-// travel_with varchar(200) 
-// budget varchar(200) 
-// actividades varchar(255) 
-// lugar_deseado varchar(255) 
-// hotel varchar(255) 
-// Restaurante varchar(255) 
-// Experiencia varchar(255) 
-// id_agencia int 
-// id_usr int
