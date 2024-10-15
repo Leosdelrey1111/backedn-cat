@@ -4,7 +4,7 @@ const axios = require('axios');
 const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const nodemailer = require('nodemailer');
-
+const cron = require('node-cron');
 
 // Configuración del transportador con una cuenta de Gmail
 const transporter = nodemailer.createTransport({
@@ -473,6 +473,63 @@ const getAllAgencias = (req, res) => {
     });
 };
 
+
+const obtenerEmailsUsuarios = (callback) => {
+    connection.query('SELECT email_usr FROM Usuario WHERE role = ?', ['usuario'], (error, results) => {
+        if (error) {
+            return callback(error, null);
+        }
+        const emails = results.map(row => row.email_usr); // Mapea solo los correos
+        callback(null, emails);
+    });
+};
+
+// Función para enviar correos a los usuarios obtenidos
+const enviarCorreosATodosLosUsuarios = () => {
+    obtenerEmailsUsuarios((error, correos) => {
+        if (error) {
+            console.error("Error al obtener correos:", error);
+            return;
+        }
+
+        correos.forEach(correo => {
+            const mailOptions = {
+                from: process.env.EMAIL, // Dirección de remitente
+                to: correo, 
+                subject: '¡Promoción Especial!', 
+                text: '¡Bienvenido a nuestra promoción especial!', 
+                html: `
+                    <div style="font-family: Arial, sans-serif; color: #333; text-align: center; padding: 20px;">
+                        <h1 style="color: #4CAF50;">¡Bienvenido a nuestra promoción especial!</h1>
+                        <p style="font-size: 16px;">Te invitamos a participar en nuestra nueva promoción donde podrás CREAR TUS PROPIOS PAQUETES PARA VIAJAR.</p>
+                        <p></p>
+                        <p> Haz clic en el botón de abajo para comenzar a diseñar tu próxima aventura.</p>
+                        <a href="https://senderos-dh.vercel.app/inicio" style="background-color: #4CAF50; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; display: inline-block;">Ver Promoción</a>
+                        <p style="font-size: 14px; color: #555; margin-top: 20px;">Si tienes alguna pregunta, no dudes en contactarnos. ¡Gracias por estar con nosotros!</p>
+                    </div>
+                `
+            };
+
+            // Enviar el correo
+            transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.error(`Error al enviar correo a ${correo}:`, error);
+                } else {
+                    console.log(`Correo enviado a: ${correo} - Info: ${info.response}`);
+                }
+            });
+        });
+    });
+};
+
+enviarCorreosATodosLosUsuarios();
+
+
+// Programar el envío de correos cada 2 días
+cron.schedule('0 0 */2 * *', () => {
+    console.log('Enviando correos cada 2 días...');
+    enviarCorreosATodosLosUsuarios();
+});
 
 module.exports = {
     authFacebook,
