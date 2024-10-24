@@ -485,7 +485,7 @@ const obtenerEmailsUsuarios = (callback) => {
 };
 
 // Función para enviar correos a los usuarios obtenidos
-const enviarCorreosATodosLosUsuarios = () => {
+/* const enviarCorreosATodosLosUsuarios = () => {
     obtenerEmailsUsuarios((error, correos) => {
         if (error) {
             console.error("Error al obtener correos:", error);
@@ -522,7 +522,7 @@ const enviarCorreosATodosLosUsuarios = () => {
     });
 };
 
-enviarCorreosATodosLosUsuarios();
+enviarCorreosATodosLosUsuarios(); */
 
 
 // Programar el envío de correos cada 2 días

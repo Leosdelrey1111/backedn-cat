@@ -3,8 +3,8 @@ const cors = require('cors');
 const usuarioRoute = require('./routes/usuarioRoutes');
 const adminRoute = require('./routes/adminRoutes');
 const gestorRoute = require('./routes/gestorRoutes');
-const apisRoutes = require('./routes/APIS/geolocationRoutes');
-
+const apisRoutes = require('./routes/apis/geolocationRoutes');
+const weatherRoutes = require('./routes/apis/weatherRoutes');
 
 const app = express();
 
@@ -35,6 +35,7 @@ app.get('/api/paypal-client-id', (req, res) => {
 //Apis nuevas
 
 app.use('/api', apisRoutes);
+app.use('/api/weather', weatherRoutes);
 
 
 // Global error handler
