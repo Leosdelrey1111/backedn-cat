@@ -1,11 +1,17 @@
 const express = require('express');
 const cors = require('cors');
+
+// Rutas Users
 const usuarioRoute = require('./routes/usuarioRoutes');
 const adminRoute = require('./routes/adminRoutes');
 const gestorRoute = require('./routes/gestorRoutes');
+
+//Rutas Apis
 const apisRoutes = require('./routes/apis/geolocationRoutes');
 const weatherRoutes = require('./routes/apis/weatherRoutes');
+const spotifyRoutes = require('./routes/apis/spotifyRoutes');
 
+// Configuración de la aplicación Express
 const app = express();
 
 // Middleware
@@ -16,7 +22,7 @@ app.use(cors({
     credentials: true
 }));
 
-
+// Middleware para parsear JSON y URL-encoded
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -32,13 +38,14 @@ app.get('/api/paypal-client-id', (req, res) => {
     res.json({ clientId: paypalClientId });
   });
 
-//Apis nuevas
-
-app.use('/api', apisRoutes);
-app.use('/api/weather', weatherRoutes);
-
-
-// Global error handler
+  //Apis nuevas
+  
+  app.use('/api', apisRoutes);
+  app.use('/api/weather', weatherRoutes);
+  app.use('/api/spotify', spotifyRoutes);
+  
+  
+  // Global error handler
 app.use((err, req, res, next) => {
     console.error(err.stack);
     res.status(500).send('Something broke!');
