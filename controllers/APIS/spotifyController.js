@@ -4,7 +4,6 @@ const spotifyService = require('../../services/spotifyService');
 const spotifyController = {
     async getArtistTracks(req, res) {
         try {
-            // Usamos getTopTracks en lugar de getArtistTracks
             const tracks = await spotifyService.getTopTracks();
             res.json({ 
                 success: true, 
@@ -19,7 +18,6 @@ const spotifyController = {
         }
     },
 
-    // Añadimos un nuevo método para agregar canciones a la playlist
     async addToPlaylist(req, res) {
         try {
             const { userId, trackUri } = req.body;
