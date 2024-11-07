@@ -5,6 +5,8 @@ const jwt = require('jsonwebtoken');
 require("dotenv").config();
 const nodemailer = require('nodemailer');
 const cron = require('node-cron');
+const multer = require('multer');
+const upload = multer({ storage: multer.memoryStorage() });
 
 // Configuración del transportador con una cuenta de Gmail
 const transporter = nodemailer.createTransport({
@@ -484,8 +486,8 @@ const obtenerEmailsUsuarios = (callback) => {
     });
 };
 
-// Función para enviar correos a los usuarios obtenidos
-/* const enviarCorreosATodosLosUsuarios = () => {
+ //Función para enviar correos a los usuarios obtenidos
+ const enviarCorreosATodosLosUsuarios = () => {
     obtenerEmailsUsuarios((error, correos) => {
         if (error) {
             console.error("Error al obtener correos:", error);
@@ -522,7 +524,7 @@ const obtenerEmailsUsuarios = (callback) => {
     });
 };
 
-enviarCorreosATodosLosUsuarios(); */
+enviarCorreosATodosLosUsuarios(); 
 
 
 // Programar el envío de correos cada 2 días
@@ -530,6 +532,52 @@ cron.schedule('0 0 */2 * *', () => {
     console.log('Enviando correos cada 2 días...');
     enviarCorreosATodosLosUsuarios();
 });
+
+
+
+const enviarTicket = async (req, res) => {
+    try {
+          const { email } = req.body;
+    const ticket = req.file;
+    // Agrega estos logs para inspeccionar los datos
+    console.log('Datos recibidos en el body:', req.body);
+    console.log('Email:', email);
+    console.log('Archivo recibido (ticket):', ticket);
+    
+    if (!email) {
+        return res.status(400).json({ error: 'Email es requerido.' });
+    }
+    if (!ticket) {
+        return res.status(400).json({ error: 'Ticket es requerido.' });
+    }
+    console.log('Email:', email);
+  console.log('Ticket:', ticket); // <-- Verifica los valores recibidos
+
+      const mailOptions = {
+        from: process.env.EMAIL,
+        to: email,
+        subject: 'Tu ticket de compra',
+        text: 'Adjunto encontrarás tu ticket de compra.',
+        attachments: [
+          {
+            filename: 'ticket.pdf',
+            content: ticket.buffer,
+            contentType: 'application/pdf'
+          }
+        ]
+      };
+
+      // Enviar el correo
+      await transporter.sendMail(mailOptions);
+
+      // Responder con éxito si se envió el correo
+      res.status(200).send('Correo enviado con éxito');
+    } catch (error) {
+        res.status(500).send('Error al enviar info', error);
+    }
+  };
+
+
 
 module.exports = {
     authFacebook,
@@ -546,4 +594,5 @@ module.exports = {
     mandarConsulta,
     getAllAtracTuristico,
     getMisPaquetesCompletos,
+    enviarTicket
 };

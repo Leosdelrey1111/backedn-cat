@@ -3,6 +3,8 @@ const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware');
 const { isUsuario } = require('../middleware/usuarioMiddleware');
+const multer = require('multer');
+const upload = multer();
 
 // Rutas para registro, confirmación de correo, login, perfil y recuperación de contraseña
 router.post('/registro', userController.registerUser);
@@ -29,6 +31,8 @@ router.get('/mispaquetes', authMiddleware.verifyToken, isUsuario, userController
 //valida facebook y regresa token
 router.post('/insertarFace',userController.authFacebook);
 router.post('/regisUpFace', userController.registerUserFacebook);
+
+router.post('/enviarcorreo', upload.single('ticket'), userController.enviarTicket);
 
 
 module.exports = router;

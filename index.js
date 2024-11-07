@@ -1,5 +1,7 @@
 const express = require('express');
 const cors = require('cors');
+const multer = require('multer');
+const upload = multer();
 
 // Rutas Users
 const usuarioRoute = require('./routes/usuarioRoutes');
@@ -10,6 +12,9 @@ const gestorRoute = require('./routes/gestorRoutes');
 const apisRoutes = require('./routes/apis/geolocationRoutes');
 const weatherRoutes = require('./routes/apis/weatherRoutes');
 const spotifyRoutes = require('./routes/apis/spotifyRoutes');
+
+
+
 
 // Configuración de la aplicación Express
 const app = express();
