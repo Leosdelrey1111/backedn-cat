@@ -12,6 +12,7 @@ const gestorRoute = require('./routes/gestorRoutes');
 const apisRoutes = require('./routes/apis/geolocationRoutes');
 const weatherRoutes = require('./routes/apis/weatherRoutes');
 const spotifyRoutes = require('./routes/apis/spotifyRoutes');
+const foursquareController = require('./controllers/APIS/foursquareController');
 
 
 
@@ -48,6 +49,7 @@ app.get('/api/paypal-client-id', (req, res) => {
   app.use('/api', apisRoutes);
   app.use('/api/weather', weatherRoutes);
   app.use('/api/spotify', spotifyRoutes);
+  app.get('/api/buscar-lugar', foursquareController.buscarLugar);
   
   
   // Global error handler
